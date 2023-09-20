@@ -1,0 +1,37 @@
+// Пример анализа данных опроса на JavaScript (Node.js)
+const readline = require('readline');
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+const surveyData = {
+    questions: [],
+    responses: []
+};
+
+function startSurvey() {
+    rl.question("Введите вопрос опроса (или 'завершить' для завершения опроса): ", function(question) {
+        if (question.toLowerCase() === 'завершить') {
+            analyzeResponses();
+        } else {
+            surveyData.questions.push(question);
+            rl.question("Введите ответ на вопрос: ", function(response) {
+                surveyData.responses.push(response);
+                startSurvey();
+            });
+        }
+    });
+}
+
+function analyzeResponses() {
+    console.log("Результаты опроса:");
+    for (let i = 0; i < surveyData.questions.length; i++) {
+        console.log(`Вопрос: ${surveyData.questions[i]}`);
+        console.log(`Ответ: ${surveyData.responses[i]}`);
+    }
+    rl.close();
+}
+
+startSurvey();
